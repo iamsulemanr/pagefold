@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#090b12" />
+    <meta name="description" content="Turn a PDF into clean, private Markdown, right in your browser. Keep the structure. Skip the extra weight." />
+    <title>Pagefold — PDF to Markdown</title>
+    <link rel="icon" type="image/svg+xml" href="/brand-mark.svg" />
+    <link rel="icon" href="./brand-mark.svg" />
+<link rel="stylesheet" href="./styles.css" />
+    <script defer src="/vendor/pdf.min.js"></script>
+    <script defer src="/app.js"></script>
+  </head>
+  <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Pagefold home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M8 4.75h10.8L25 11v15.25a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-20.5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/><path d="M18.5 5v6.5H25M11 17h10M11 21h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="m20.5 19.5 2.25 2.25-2.25 2.25" stroke="#9AF4DF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="brand-name">pagefold<span class="brand-period">.</span></span>
+        </a>
+        <div class="topbar-meta"><span class="status-dot"></span><span>LOCAL PROCESSING</span><span class="meta-divider">/</span><span>NO UPLOADS</span></div>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-line"></span> A lighter format for AI</p>
+            <h1 id="hero-title">PDF in.<br /><span>Signal out.</span></h1>
+            <p class="hero-description">Turn dense PDFs into clean Markdown your AI can read with less friction. One file, one click, and it never leaves your device.</p>
+            <div class="hero-proof">
+              <div class="proof-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none"><path d="M10 2.5 3.75 5v4.75c0 3.75 2.65 6.2 6.25 7.75 3.6-1.55 6.25-4 6.25-7.75V5L10 2.5Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/><path d="m7.5 9.75 1.65 1.65 3.45-3.7" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div><strong>Your files stay yours.</strong><span>Processed entirely in this browser.</span></div>
+            </div>
+          </div>
+
+          <div class="converter-card" aria-label="PDF to Markdown converter">
+            <div class="card-head">
+              <div><span class="card-kicker">WORKSPACE <span>01</span></span><h2>Make it Markdown</h2></div>
+              <span class="local-badge"><span class="status-dot"></span> PRIVATE BY DESIGN</span>
+            </div>
+
+            <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Choose a PDF file or drop it here">
+              <input id="file-input" type="file" accept="application/pdf,.pdf" hidden />
+              <div class="drop-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none"><path d="M14 5.75h13.4L37 15.3v26.95H14a3 3 0 0 1-3-3V8.75a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="1.5"/><path d="M27 6v10h10M17.5 27.5h16M17.5 32.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M24 21.5v9m0-9-3.25 3.25M24 21.5l3.25 3.25" stroke="#a0f4df" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <p class="drop-title">Drop your PDF here</p>
+              <p class="drop-subtitle">or <button class="text-button" id="browse-button" type="button">browse files</button> from your device</p>
+              <div class="file-spec"><span>PDF ONLY</span><i></i><span>UP TO 100 MB</span><i></i><span>STAYS ON DEVICE</span></div>
+            </div>
+
+            <div class="selected-file hidden" id="selected-file">
+              <div class="pdf-chip" aria-hidden="true">PDF</div>
+              <div class="file-details"><strong id="file-name">document.pdf</strong><span id="file-size">0 KB</span></div>
+              <button class="icon-button remove-file" id="remove-file" type="button" aria-label="Remove selected file" title="Remove file"><svg viewBox="0 0 20 20" fill="none"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            </div>
+
+            <div class="progress-wrap hidden" id="progress-wrap" aria-live="polite">
+              <div class="progress-label"><span id="progress-message">Reading your PDF…</span><span id="progress-percent">0%</span></div>
+              <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+            </div>
+
+            <div class="feedback hidden" id="feedback" role="status"></div>
+            <button class="convert-button" id="convert-button" type="button" disabled>
+              <span id="convert-label">Choose a PDF to begin</span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h11m0 0-4.25-4.25M15 10l-4.25 4.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+
+            <div class="result hidden" id="result">
+              <div class="result-head"><div><span class="card-kicker">CONVERSION COMPLETE</span><strong id="result-title">Your Markdown is ready.</strong></div><span class="success-mark" aria-hidden="true">✓</span></div>
+              <div class="result-stats"><div><span>PAGES</span><strong id="result-pages">—</strong></div><div><span>TEXT SIZE</span><strong id="result-size">—</strong></div><div><span>EST. TOKENS</span><strong id="result-tokens">—</strong></div></div>
+              <p class="estimate-note">Token count is a rough estimate based on extracted text, not a model-specific measurement.</p>
+              <div class="result-actions"><button class="download-button" id="download-button" type="button"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v9m0 0 3.5-3.5M10 12 6.5 8.5M4 14v2.5h12V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Download .md</button><button class="icon-button copy-button" id="copy-button" type="button" aria-label="Copy Markdown to clipboard" title="Copy Markdown"><svg viewBox="0 0 20 20" fill="none"><rect x="7" y="6" width="9" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M12 6V4.5A1.5 1.5 0 0 0 10.5 3h-6A1.5 1.5 0 0 0 3 4.5v8A1.5 1.5 0 0 0 4.5 14H7" stroke="currentColor" stroke-width="1.4"/></svg></button></div>
+              <button class="convert-another" id="convert-another" type="button">Convert another PDF</button>
+            </div>
+
+            <div class="card-footer"><span><span class="lock-icon">⌑</span> Files are never sent to a server</span><span>PDF <b>→</b> MD</span></div>
+          </div>
+        </section>
+
+        <section class="value-strip" aria-label="Benefits">
+          <div class="strip-label"><span class="strip-mark">//</span> WHY FOLD?</div>
+          <div class="benefit"><span class="benefit-num">01</span><div><strong>Less overhead</strong><span>Text-first Markdown skips much of a PDF's visual baggage.</span></div></div>
+          <div class="benefit"><span class="benefit-num">02</span><div><strong>More usable context</strong><span>Readable structure makes it easier to search, quote, and reuse.</span></div></div>
+          <div class="benefit"><span class="benefit-num">03</span><div><strong>Still your document</strong><span>Conversion happens locally. Your file stays on your device.</span></div></div>
+        </section>
+
+        <section class="note-row">
+          <span class="note-icon" aria-hidden="true">i</span>
+          <p><strong>A quick note on tokens.</strong> Markdown can use fewer tokens than sending a PDF when it removes layout and image-processing overhead, but savings vary by document and AI tool. Scanned pages need OCR, which this text extractor does not perform.</p>
+        </section>
+      </main>
+
+      <footer class="footer"><span>PAGEFOLD<span class="brand-period">.</span></span><span>BUILT FOR THE THINGS YOU WANT YOUR AI TO REMEMBER.</span><span>© <span id="year"></span></span></footer>
+    </div>
+  </body>
+</html>
