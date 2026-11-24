@@ -15,7 +15,11 @@
   let busy = false;
 
   if (window.pdfjsLib) {
-    window.pdfjsLib.GlobalWorkerOptions.workerSrc = './vendor/pdf.worker.min.js';
+    const pagefoldConfig = window.PagefoldConfig || {};
+    const scriptUrl = document.currentScript && document.currentScript.src ? document.currentScript.src : document.baseURI;
+    const scriptDirectory = new URL('.', scriptUrl);
+    const relativeWorkerUrl = new URL('vendor/pdf.worker.min.js', scriptDirectory).href;
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = pagefoldConfig.workerUrl || relativeWorkerUrl;
   }
   $('year').textContent = String(new Date().getFullYear());
 
